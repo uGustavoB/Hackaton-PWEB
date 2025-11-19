@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Corridas</title>
+</head>
+<body>
+
+<h1>Corridas</h1>
+
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Tempo (segundos)</th>
+        <th>Ativa?</th>
+        <th>Perguntas</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="corrida : ${listaCorridas}">
+        <td th:text="${corrida.id}"></td>
+        <td th:text="${corrida.titulo}"></td>
+        <td th:text="${corrida.descricao}"></td>
+        <td th:text="${corrida.tempoSegundos}"></td>
+        <td th:text="${corrida.ativa ? 'Sim' : 'Não'}"></td>
+
+        <!-- Lista de perguntas dentro da corrida -->
+        <td>
+            <ul>
+                <li th:each="p : ${corrida.perguntas}"
+                    th:text="${p.enunciado}">
+                </li>
+            </ul>
+        </td>
+        <td>
+            <form th:action="@{/corridas/iniciar}" method="post">
+                <input type="hidden" name="id" th:value="${corrida.id}"/>
+                <button type="submit">Iniciar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
