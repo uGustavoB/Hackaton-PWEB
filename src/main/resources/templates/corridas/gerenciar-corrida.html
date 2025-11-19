@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Corridas</title>
+</head>
+<body>
+
+<h1>Gerenciar Corridas</h1>
+
+<h3>Nova Corrida / Editar Corrida</h3>
+
+<form th:action="@{/corridas/salvar}" th:object="${corrida}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label>Título:</label>
+        <input type="text" th:field="*{titulo}" placeholder="Digite o título da corrida" required />
+    </div>
+
+    <div>
+        <label>Descrição:</label>
+        <input type="text" th:field="*{descricao}" placeholder="Digite uma descrição" required />
+    </div>
+
+    <div>
+        <label>Tempo (segundos):</label>
+        <input type="number" th:field="*{tempoSegundos}" placeholder="Ex: 60" required />
+    </div>
+
+    <div>
+        <label>Ativa?</label>
+        <input type="checkbox" th:field="*{ativa}" />
+    </div>
+
+    <div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/corridas/visualizar}">Cancelar Edição</a>
+    </div>
+</form>
+
+<hr />
+
+<h3>Corridas Cadastradas</h3>
+
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Tempo (s)</th>
+        <th>Ativa</th>
+        <th>Qtd. Perguntas</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="c : ${listaCorridas}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.titulo}"></td>
+        <td th:text="${c.descricao}"></td>
+        <td th:text="${c.tempoSegundos}"></td>
+        <td th:text="${c.ativa ? 'Sim' : 'Não'}"></td>
+        <td th:text="${c.perguntas != null ? c.perguntas.size() : 0}"></td>
+
+        <td>
+
+            <a th:href="@{/corridas/editar(id=${c.id})}">
+                Editar
+            </a>
+
+            <form th:action="@{/corridas/deletar}" method="post"
+                  onsubmit="return confirm('Tem certeza que deseja excluir esta corrida?');"
+                  style="display:inline;">
+                <input type="hidden" name="id" th:value="${c.id}" />
+                <button type="submit">Excluir</button>
+            </form>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Corridas Ativas</h3>
+
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Tempo (s)</th>
+        <th>Ativa</th>
+        <th>Qtd. Perguntas</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="c : ${listaCorridasAtivas}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.titulo}"></td>
+        <td th:text="${c.descricao}"></td>
+        <td th:text="${c.tempoSegundos}"></td>
+        <td th:text="${c.ativa ? 'Sim' : 'Não'}"></td>
+        <td th:text="${c.perguntas != null ? c.perguntas.size() : 0}"></td>
+
+        <td>
+
+            <a th:href="@{/corridas/editar(id=${c.id})}">
+                Editar
+            </a>
+
+            <form th:action="@{/corridas/deletar}" method="post"
+                  onsubmit="return confirm('Tem certeza que deseja excluir esta corrida?');"
+                  style="display:inline;">
+                <input type="hidden" name="id" th:value="${c.id}" />
+                <button type="submit">Excluir</button>
+            </form>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<a th:href="@{/}">Voltar</a>
+
+</body>
+</html>

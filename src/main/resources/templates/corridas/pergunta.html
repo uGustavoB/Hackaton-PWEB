@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pergunta</title>
+</head>
+
+<body>
+
+<h2 th:text="${pergunta.enunciado}"></h2>
+
+<div>
+    Tempo restante: <span id="timer" th:text="${tempoRestante}"></span> segundos
+</div>
+
+<form th:action="@{/corridas/responder}" method="post">
+    <input type="hidden" name="perguntaId" th:value="${pergunta.id}"/>
+
+    <div>
+        <label>
+            <input type="radio" name="resposta" value="A" required />
+            <span th:text="${pergunta.alternativaA}"></span>
+        </label>
+    </div>
+
+    <div>
+        <label>
+            <input type="radio" name="resposta" value="B" />
+            <span th:text="${pergunta.alternativaB}"></span>
+        </label>
+    </div>
+
+    <div>
+        <label>
+            <input type="radio" name="resposta" value="C" />
+            <span th:text="${pergunta.alternativaC}"></span>
+        </label>
+    </div>
+
+    <div>
+        <label>
+            <input type="radio" name="resposta" value="D" />
+            <span th:text="${pergunta.alternativaD}"></span>
+        </label>
+    </div>
+
+    <button type="submit">Responder</button>
+</form>
+
+<script>
+    let tempo = parseInt(document.getElementById("timer").innerText);
+
+    setInterval(() => {
+        tempo--;
+        document.getElementById("timer").innerText = tempo;
+
+        if (tempo <= 0) {
+            window.location.href = "/corridas/finalizar";
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>
